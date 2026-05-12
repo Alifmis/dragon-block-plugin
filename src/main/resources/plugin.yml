@@ -2,3 +2,9 @@ name: dragon-block-plugin
 version: '1.0-SNAPSHOT'
 main: org.alifmis.dragonBlockPlugin.DragonBlockPlugin
 api-version: '1.21'
+folia-supported: true
+
+permissions:
+  dragonblock.admin:
+    description: Allows /dragonblock reload and other admin commands
+    default: op

@@ -1,0 +1,18 @@
+# ───────────────────────────────────────────────────────────
+# Dragon Block Plugin — Config
+# ───────────────────────────────────────────────────────────
+#
+# Controls which blocks the Ender Dragon is allowed to destroy.
+# Only blocks listed here can be broken by the dragon.
+# An empty list means the dragon cannot destroy ANY blocks.
+#
+# Block names are Material enum values (case-insensitive):
+#   Useful values: OBSIDIAN, END_STONE, GLASS, IRON_BARS, BEDROCK
+#   See: https://jd.papermc.io/paper/1.21/org/bukkit/Material.html
+#
+# To add blocks on a running server without restarting:
+#   /dragonblock reload
+#
+# ───────────────────────────────────────────────────────────
+
+whitelisted-blocks: []

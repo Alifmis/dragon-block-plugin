@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.alifmis.dragonBlockPlugin.listener.DragonBlockListener;
 
+// Prevents the Ender Dragon from destroying blocks unless whitelisted in config.yml; works on Folia and Paper.
 public final class DragonBlockPlugin extends JavaPlugin {
 
     private DragonBlockListener listener;
@@ -17,6 +18,7 @@ public final class DragonBlockPlugin extends JavaPlugin {
         this.listener = new DragonBlockListener(this);
         getServer().getPluginManager().registerEvents(this.listener, this);
 
+        // Commands (Brigadier, Folia-safe)
         registerCommands();
 
         getLogger().info("DragonBlockPlugin enabled — dragon block destruction is restricted.");
@@ -59,6 +61,7 @@ public final class DragonBlockPlugin extends JavaPlugin {
         );
     }
 
+    // Reloads the config and pushes the new whitelist to the listener.
     public void reloadPluginConfig() {
         if (this.listener != null) {
             this.listener.reloadConfig();

@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// Cancels dragon block destruction (flying and explosions) unless the block is whitelisted.
 public class DragonBlockListener implements Listener {
 
     private final DragonBlockPlugin plugin;
@@ -25,11 +26,13 @@ public class DragonBlockListener implements Listener {
         this.whitelistedBlocks = loadBlockNames();
     }
 
+    // (Re)loads the whitelist from disk; called by /dragonblock reload.
     public void reloadConfig() {
         plugin.reloadConfig();
         this.whitelistedBlocks = loadBlockNames();
     }
 
+    // Reads whitelisted blocks from config.yml, normalising names to UPPER_CASE.
     private Set<String> loadBlockNames() {
         List<String> raw = plugin.getConfig().getStringList("whitelisted-blocks");
         Set<String> set = new HashSet<>(raw.size());
@@ -41,10 +44,12 @@ public class DragonBlockListener implements Listener {
         return Set.copyOf(set); // immutable snapshot
     }
 
+    // Checks whether a block Material is allowed by the current whitelist.
     private boolean isWhitelisted(Material material) {
         return whitelistedBlocks.contains(material.name());
     }
 
+    // 1. Dragon flying through blocks: cancels the change unless the block is whitelisted.
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         if (!(event.getEntity() instanceof EnderDragon)) {
@@ -59,6 +64,7 @@ public class DragonBlockListener implements Listener {
         }
     }
 
+    // 2. Dragon explosions (death, fireball): removes non-whitelisted blocks from the list.
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
@@ -70,6 +76,7 @@ public class DragonBlockListener implements Listener {
         event.blockList().removeIf(state -> !isWhitelisted(state.getType()));
     }
 
+    // Returns true if the entity is a fireball shot by an EnderDragon.
     private boolean isFromDragonFireball(Entity entity) {
         if (!(entity instanceof Explosive explosive)) {
             return false;
